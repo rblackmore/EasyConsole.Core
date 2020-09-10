@@ -27,7 +27,7 @@ namespace EasyConsole.BetterDemo
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    services.Configure<AppManagerOptions>(opt => { opt.Title = "Main App"; opt.BreadCrumbHeader = true; });
+                    services.Configure<AppManagerOptions>(opt => { opt.Title = "A Wonderful Demo App"; opt.BreadCrumbHeader = true; });
 
                     services.AddSingleton<AppManager>();
                     services.AddTransient<MainPage>();
@@ -36,16 +36,21 @@ namespace EasyConsole.BetterDemo
                 .Build();
 
             var app = ActivatorUtilities.CreateInstance<AppManager>(host.Services);
-            
+
             app.Run();
 
         }
 
         static void BuildConfig(IConfigurationBuilder builder)
         {
+            var environment = 
+                Environment.GetEnvironmentVariable("CONSOLENETCORE_ENVIRONMENT") ?? Environments.Production;
+
+            var environmentappsettingsPath = $"appsettings.{environment}.json";
+
             builder.SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("CONSOLENETCORE_ENVIRONMENT") ?? Environments.Production}.json", optional: true)
+                .AddJsonFile(environmentappsettingsPath, optional: true)
                 .AddEnvironmentVariables();
         }
     }

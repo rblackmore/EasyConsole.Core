@@ -37,8 +37,8 @@ namespace EasyConsole
         {
             base.Display();
 
-            if (AppManager.NavigationEnabled && !Menu.Contains("Go back"))
-                Menu.Add("Go back", () => { AppManager.NavigateBack(); });
+            if (this.AppManager.NavigationEnabled && !this.Menu.Contains("Go back"))
+                this.Menu.Add("Go back", () => { this.AppManager.NavigateBack(); });
 
             Menu.Display();
         }

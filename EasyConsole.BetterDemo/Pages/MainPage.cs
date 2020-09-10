@@ -4,11 +4,11 @@ using System.Text;
 
 namespace EasyConsole.BetterDemo.Pages
 {
-    public class MainPage : MenuPage
+    public class MainPage : Page
     {
         public MainPage(AppManager appManager) : base("Main Page", appManager)
         {
-            Add("Say Hi", SayHi);
+            this.Menu.Add(new Option("Say Hello", SayHi));
         }
 
         private void SayHi()

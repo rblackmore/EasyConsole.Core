@@ -1,27 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace EasyConsole
+﻿namespace EasyConsole
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class Menu
     {
         private IList<Option> Options { get; set; }
 
         public Menu()
         {
-            Options = new List<Option>();
+            this.Options = new List<Option>();
         }
 
         public void Display()
         {
-            for (int i = 0; i < Options.Count; i++)
+            for (int i = 0; i < this.Options.Count; i++)
             {
-                Console.WriteLine("{0}. {1}", i + 1, Options[i].Name);
+                Console.WriteLine("{0}. {1}", i + 1, this.Options[i].Name);
             }
-            int choice = Input.ReadInt("Choose an option:", min: 1, max: Options.Count);
 
-            Options[choice - 1].Callback();
+            int choice = Input.ReadInt("Choose an option:", min: 1, max: this.Options.Count);
+
+            this.Options[choice - 1].Callback();
         }
 
         public Menu Add(string option, Action callback)
@@ -31,13 +32,13 @@ namespace EasyConsole
 
         public Menu Add(Option option)
         {
-            Options.Add(option);
+            this.Options.Add(option);
             return this;
         }
 
         public bool Contains(string option)
         {
-            return Options.FirstOrDefault((op) => op.Name.Equals(option)) != null;
+            return this.Options.FirstOrDefault((op) => op.Name.Equals(option)) != null;
         }
     }
 }

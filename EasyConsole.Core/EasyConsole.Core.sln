@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyConsole.Core", "EasyCon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyConsole.Demo", "..\EasyConsole.Demo\EasyConsole.Demo.csproj", "{DFEA63F2-79D9-4AF5-8837-5F6B75EDE46C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyConsole.BetterDemo", "..\EasyConsole.BetterDemo\EasyConsole.BetterDemo.csproj", "{57439B81-F13C-4612-A9BD-501C70E47762}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyConsole.BetterDemo", "..\EasyConsole.BetterDemo\EasyConsole.BetterDemo.csproj", "{57439B81-F13C-4612-A9BD-501C70E47762}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B74EC6FB-A2AD-48C8-9D6A-C9C8216A2E30}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		..\stylecop.json = ..\stylecop.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,35 +1,35 @@
-﻿using System;
-using System.Linq;
-
-namespace EasyConsole
+﻿namespace EasyConsole
 {
+    using System;
+    using System.Linq;
+
     public abstract class Page
     {
+        protected Menu Menu { get; set; }
+
+        public Page(string title, AppManager appManager, params Option[] options)
+        {
+            this.Title = title;
+            this.AppManager = appManager;
+
+            this.Menu = new Menu();
+
+            foreach (var option in options)
+            {
+                this.Menu.Add(option);
+            }
+        }
+
         public string Title { get; private set; }
 
         public AppManager AppManager { get; set; }
 
-        public Page(string title, AppManager appManager)
-        {
-            Title = title;
-            AppManager = appManager;
-        }
-
         public virtual void Display()
         {
-            if (AppManager.History.Count > 1 && AppManager.BreadcrumbHeader)
-            {
-                string breadcrumb = null;
-                foreach (var title in AppManager.History.Select((page) => page.Title).Reverse())
-                    breadcrumb += title + " > ";
-                breadcrumb = breadcrumb.Remove(breadcrumb.Length - 3);
-                Console.WriteLine(breadcrumb);
-            }
-            else
-            {
-                Console.WriteLine(Title);
-            }
-            Console.WriteLine("---");
+            if (this.AppManager.NavigationEnabled && !this.Menu.Contains("Go Back"))
+                this.Menu.Add("Go Back", () => { this.AppManager.NavigateBack(); });
+
+            this.Menu.Display();
         }
     }
 }
