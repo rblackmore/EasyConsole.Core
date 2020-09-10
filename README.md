@@ -2,11 +2,11 @@
 # EasyConsole.Core
 EasyConsole is a library to make it easier for developers to build a simple menu interface for a .NET console application.
 
-This project is a fork of [EasyConsole](https://github.com/splttingatms/EasyConsole), originally created by [splttingatms](https://github.com/splttingatms)
+### This project is a fork of [EasyConsole](https://github.com/splttingatms/EasyConsole), originally created by [splttingatms](https://github.com/splttingatms)
 
 ![Program Demo](https://i.imgur.com/Hlc2QoI.gif)
 
-###Features
+### Features
 * Automatically numbered menus
 * Fluent creation of menus
 * Input/Output helpers

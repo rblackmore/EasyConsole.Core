@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EasyConsole
 {
-    public abstract class Program
+    public class AppManager
     {
         protected string Title { get; set; }
 
@@ -25,12 +25,16 @@ namespace EasyConsole
 
         public bool NavigationEnabled { get { return History.Count > 1; } }
 
-        protected Program(string title, bool breadcrumbHeader)
+        public AppManager(AppManagerOptions options = null)
         {
-            Title = title;
             Pages = new Dictionary<Type, Page>();
             History = new Stack<Page>();
-            BreadcrumbHeader = breadcrumbHeader;
+
+            if (options != null)
+            {
+                Title = options.Title;
+                BreadcrumbHeader = options.BreadCrumbHeader;
+            }
         }
 
         public virtual void Run()
@@ -85,7 +89,7 @@ namespace EasyConsole
             // select the new page
             Page nextPage;
             if (!Pages.TryGetValue(pageType, out nextPage))
-                throw new KeyNotFoundException("The given page \"{0}\" was not present in the program".Format(pageType));
+                throw new KeyNotFoundException("The given page \"{0}\" was not present".Format(pageType));
 
             // enter the new page
             History.Push(nextPage);

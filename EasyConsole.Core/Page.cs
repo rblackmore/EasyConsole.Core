@@ -7,20 +7,20 @@ namespace EasyConsole
     {
         public string Title { get; private set; }
 
-        public Program Program { get; set; }
+        public AppManager AppManager { get; set; }
 
-        public Page(string title, Program program)
+        public Page(string title, AppManager appManager)
         {
             Title = title;
-            Program = program;
+            AppManager = appManager;
         }
 
         public virtual void Display()
         {
-            if (Program.History.Count > 1 && Program.BreadcrumbHeader)
+            if (AppManager.History.Count > 1 && AppManager.BreadcrumbHeader)
             {
                 string breadcrumb = null;
-                foreach (var title in Program.History.Select((page) => page.Title).Reverse())
+                foreach (var title in AppManager.History.Select((page) => page.Title).Reverse())
                     breadcrumb += title + " > ";
                 breadcrumb = breadcrumb.Remove(breadcrumb.Length - 3);
                 Console.WriteLine(breadcrumb);
