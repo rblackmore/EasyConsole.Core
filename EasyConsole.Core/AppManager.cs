@@ -6,6 +6,8 @@
     using System.Linq;
     using System.Text;
 
+    using CommonServiceLocator;
+
     public class AppManager
     {
         /// <summary>
@@ -28,6 +30,8 @@
 
         public bool BreadcrumbHeader { get; private set; }
 
+        public bool IsRunning { get; private set; }
+
         public Stack<Page> History { get; private set; }
 
         /// <summary>
@@ -37,6 +41,11 @@
         public bool NavigationEnabled
         {
             get { return this.History.Count > 1; }
+        }
+
+        public bool IsCurrentPageMain
+        {
+            get { return this.History.Count == 1; }
         }
 
         protected Page CurrentPage
@@ -54,12 +63,18 @@
         /// </summary>
         public virtual void Run()
         {
+
+            this.IsRunning = true;
+
             try
             {
                 if (this.Title != null)
                     Console.Title = this.Title;
 
-                this.CurrentPage.Display();
+                while (this.IsRunning)
+                {
+                    this.DisplayCurrentPage();
+                }
             }
             catch (Exception e)
             {
@@ -82,7 +97,7 @@
             while (this.History.Count > 1)
                 this.History.Pop();
 
-            this.DisplayCurrentPage();
+            //this.DisplayCurrentPage();
         }
 
         /// <summary>
@@ -94,7 +109,7 @@
         {
             this.SetPage<T>();
 
-            this.DisplayCurrentPage();
+            //this.DisplayCurrentPage();
             return this.CurrentPage as T;
         }
 
@@ -106,8 +121,13 @@
         {
             this.History.Pop();
 
-            this.DisplayCurrentPage();
+            //this.DisplayCurrentPage();
             return this.CurrentPage;
+        }
+
+        public void Close()
+        {
+            this.IsRunning = false;
         }
 
         public void AddPage(Page page)
@@ -129,19 +149,28 @@
         /// </summary>
         /// <typeparam name="T">The Page to set as current.</typeparam>
         /// <returns>The current page.</returns>
-        protected T SetPage<T>() where T : Page
+        public T SetPage<T>() where T : Page
         {
             Type pageType = typeof(T);
 
-            if (this.CurrentPage != null && this.CurrentPage.GetType() == pageType)
+            if (this.IsCurrentPageNotNullAndTypeOf<T>())
                 return this.CurrentPage as T;
 
-            if (!this.Pages.TryGetValue(pageType, out Page nextPage))
+            Page nextPage;
+
+            if (ServiceLocator.IsLocationProviderSet)
+                nextPage = ServiceLocator.Current.GetInstance<T>();
+            else if (!this.Pages.TryGetValue(pageType, out nextPage))
                 throw new KeyNotFoundException($"The given page \"{pageType.FullName}\" was not present");
 
             this.History.Push(nextPage);
 
             return this.CurrentPage as T;
+        }
+
+        private bool IsCurrentPageNotNullAndTypeOf<T>()
+        {
+            return this.CurrentPage != null && this.CurrentPage.GetType() == typeof(T);
         }
 
         private void DisplayCurrentPage()
@@ -153,7 +182,8 @@
             {
                 StringBuilder breadcrumb = new StringBuilder();
 
-                var pageTitleHistoryReversed = this.History.Select((page) => page.Title).Reverse();
+                var pageTitleHistoryReversed =
+                    this.History.Select((page) => page.Title).Reverse();
 
                 foreach (var title in pageTitleHistoryReversed)
                 {
@@ -166,7 +196,7 @@
             }
             else
             {
-                Console.WriteLine(this.Title);
+                Console.WriteLine(this.CurrentPage.Title);
             }
 
             Console.WriteLine("---");

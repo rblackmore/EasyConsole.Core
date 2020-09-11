@@ -6,7 +6,13 @@ namespace EasyConsole.BetterDemo.Pages
 {
     public class MainPage : Page
     {
-        public MainPage(AppManager appManager) : base("Main Page", appManager)
+
+        public MainPage(AppManager appManager) : 
+            base(
+                "Main Page",
+                appManager, 
+                new Option("Go to Page 1", () => appManager.NavigateTo<Page1>())
+                )
         {
             this.Menu.Add(new Option("Say Hello", SayHi));
         }
@@ -15,6 +21,8 @@ namespace EasyConsole.BetterDemo.Pages
         {
             string name = Input.ReadString("Enter name: ");
             Output.WriteLine(ConsoleColor.Cyan, "Hello, {0}", name);
+
+            Input.ReadKey();
         }
     }
 }

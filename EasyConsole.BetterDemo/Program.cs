@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 
+using CommonServiceLocator;
+
+using EasyConsole.BetterDemo.DependencyInjection;
 using EasyConsole.BetterDemo.Pages;
 
 using Microsoft.Extensions.Configuration;
@@ -27,18 +30,26 @@ namespace EasyConsole.BetterDemo
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    services.Configure<AppManagerOptions>(opt => { opt.Title = "A Wonderful Demo App"; opt.BreadCrumbHeader = true; });
+                    services.Configure<AppManagerOptions>(opt => 
+                    { 
+                        opt.Title = "A Wonderful Demo App"; 
+                        opt.BreadCrumbHeader = true;
+                    });
 
                     services.AddSingleton<AppManager>();
                     services.AddTransient<MainPage>();
+                    services.AddTransient<Page1>();
                 })
                 .UseSerilog()
                 .Build();
 
-            var app = ActivatorUtilities.CreateInstance<AppManager>(host.Services);
+            ServiceLocator.SetLocatorProvider(() => new MyServiceLocator(host.Services));
 
-            app.Run();
+            var appManager = ServiceLocator.Current.GetInstance<AppManager>();
 
+            appManager.SetPage<MainPage>();
+
+            appManager.Run();
         }
 
         static void BuildConfig(IConfigurationBuilder builder)

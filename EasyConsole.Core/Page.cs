@@ -5,7 +5,7 @@
 
     public abstract class Page
     {
-        protected Menu Menu { get; set; }
+        protected Menu Menu { get; }
 
         public Page(string title, AppManager appManager, params Option[] options)
         {
@@ -28,6 +28,9 @@
         {
             if (this.AppManager.NavigationEnabled && !this.Menu.Contains("Go Back"))
                 this.Menu.Add("Go Back", () => { this.AppManager.NavigateBack(); });
+
+            if (this.AppManager.IsCurrentPageMain && !this.Menu.Contains("Exit"))
+                this.Menu.Add("Exit", () => { this.AppManager.Close(); });
 
             this.Menu.Display();
         }

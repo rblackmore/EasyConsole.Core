@@ -22,6 +22,8 @@
 
             int choice = Input.ReadInt("Choose an option:", min: 1, max: this.Options.Count);
 
+            Output.WriteLine("---");
+
             this.Options[choice - 1].Callback();
         }
 

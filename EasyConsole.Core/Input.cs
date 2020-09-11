@@ -60,5 +60,10 @@ namespace EasyConsole
 
             return choice;
         }
+
+        public static ConsoleKey ReadKey()
+        {
+            return Console.ReadKey().Key;
+        }
     }
 }
